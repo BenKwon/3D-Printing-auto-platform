@@ -14,6 +14,8 @@
 3. 클라이언트 이메일로 견적서(.pdf) 전송
 
 ![image](https://user-images.githubusercontent.com/22045187/133603405-5d04a8e7-b585-4a18-86ab-f7988e3a6e15.png)
+![image](https://user-images.githubusercontent.com/22045187/133603728-7a90522b-bdaf-4c4e-bd36-ebade97c4029.png)
+
 
 4. 최종 결제 페이지
 

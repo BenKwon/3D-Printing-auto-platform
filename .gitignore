@@ -1,0 +1,6 @@
+.DS_Store
+sheet_cred.json
+*.json
+./node_modules
+./functions/node_modules
+./functions/lib/sheet_cred.json

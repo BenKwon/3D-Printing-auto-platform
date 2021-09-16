@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+           #drop_zone {
+            border: 5px solid gray;
+            width:  200px;
+            height: 100px;
+            } 
+        </style>
+    </head>
+
+    <body>
+        <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <p>파일을 드래그 해주세요</p>
+        </div>
+
+        <div id="cont_box">
+
+            <div id="stl_cont" style="width:200px;height:200px;margin:0 auto;"></div>
+
+        </div>
+
+        <script src="stl_viewer.min.js"></script>
+        <script>
+            var stl_viewer=new StlViewer ( document.getElementById("stl_cont") );
+            //stl_viewer객체 를 담는 배열
+            var object_array = [];
+            //각 stl_viewer객체에서 지워야할 models의 인덱스를 담는 배열
+            var rm_id_array = [];
+            //stl_cont의 수
+            var count = 0;
+            //drops플래그
+            var drop_flag = 0;
+            //각 stl viwer객체에 담긴 3d model의 정보를 담는 배열
+            var info_array = [];
+            function dropHandler(ev) {
+                console.log('File(s) dropped');
+                // Prevent default behavior (Prevent file from being opened)
+                ev.preventDefault();
+                //console.log(ev.dataTransfer.files);
+                if (ev.dataTransfer.items) {
+                        // Use DataTransferItemList interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                        // If dropped items aren't files, reject them
+                        //반환된 stl_viewer객체에 업로드된 3D모델을 로드
+                        create_model(i).add_model({local_file:ev.dataTransfer.files[i]});
+                        console.log(ev.dataTransfer.files);
+                        if (ev.dataTransfer.items[i].kind === 'file') {
+                            var file = ev.dataTransfer.items[i].getAsFile();
+                            console.log('... file[' + i + '].name = ' + file.name);
+                        }
+                    }
+                } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                    console.log(ev.dataTransfer.files[i]);
+                    }
+                }
+            }
+            function dragOverHandler(ev) {
+                console.log('File(s) in drop zone'); 
+                // Prevent default behavior (Prevent file from being opened)
+                ev.preventDefault();
+            }
+
+            function create_model(){
+                //stl_cont를 감싸는 wrap_cont 
+                var wrap_cont = document.createElement("div");
+                var wrap_id = 'wrap_cont';
+                wrap_id += `${count}`;
+                wrap_cont.id = wrap_id;
+                wrap_cont.style.background = "gray";
+
+                //stl파일이 출력될 canvas를 감쌀 stl_cont
+                var stl_cont = document.createElement("div");
+                var cont_id = 'stl_cont';
+                cont_id += `${count}`;
+                stl_cont.id = cont_id;
+                stl_cont.style.width = "200px";
+                stl_cont.style.height = "200px";
+                stl_cont.margin = 0;
+                stl_cont.style.background = "yellow";
+                var detail = document.createElement("p");
+                detail.innerHTML = "changed";
+                detail.style.color = "white";
+
+                //wrap_cont의 갯수를 기록할 count변수 1증가
+                count++;
+
+                //부모자식 구도 배치
+                document.getElementById("cont_box").appendChild(wrap_cont);
+                document.getElementById(wrap_id).appendChild(detail);
+                document.getElementById(wrap_id).appendChild(stl_cont);
+                
+                //make_object에서 만들어진 stl_viewer객체를 반환
+                return make_object(cont_id);
+            }
+
+            function make_object(cont_id){
+                var stl_viewer = new StlViewer
+                (
+                    document.getElementById(cont_id),
+                    {
+                        on_model_drop : drop_handler,
+                        model_loaded_callback:stl_loaded,
+                    }
+                );
+                object_array.push(stl_viewer);
+                if(rm_id_array[count-1] == undefined){
+                    //rm_id_array에 1을 넣어줌 
+                    rm_id_array.push(1);
+                    //info_array에 3d모델의 정보를 넣기위한 객체를 넣어줌
+                    info_array.push({});
+                }
+           /*     else{
+                    rm_id_array[count-1]++;
+                }
+            */
+                return stl_viewer;
+            }
+            
+            //stl viewer 객체 drop이벤트 핸들러
+            function drop_handler(){
+                //드랍 플래그 설정
+                drop_flag = 1;  
+            }
+
+            function stl_loaded()
+            {   
+                //현재 모델링이 출력되는 상자의 자매 노드 (x,y,z,부피가 표시되는 노드)
+                var detail_elem = document.getElementById(this.parent_element.id).previousSibling;
+                
+                //현재 업로드된 3D모델 정보 로드
+                pen_json = JSON.stringify(this.get_model_info(this.models.length));
+                my_pen = JSON.parse(pen_json);
+                console.log(my_pen);
+                //dims : 사용자에게 보여질 3D모델 정보 스트링 
+                dims = ` x: ${my_pen.dims.x.toFixed(2)} y: ${my_pen.dims.y.toFixed(2)}  z: ${my_pen.dims.z.toFixed(2)}
+                 <br> 부피 : ${my_pen.volume.toFixed(2)}`;                
+                //3D 모델 정보(X,Y,Z 부피 값을 HTML로 보냄)
+                 detail_elem.innerHTML = dims;
+
+                //stl_cont숫자 < 숫자부분을 빼내서 index에 저장
+                var index = this.parent_element.id.substr(8,100);
+                index  = Number(index);
+
+                info_array[index] = {
+                    filename: my_pen.name, 
+                    x: my_pen.dims.x.toFixed(2),
+                    y: my_pen.dims.y.toFixed(2),
+                    z: my_pen.dims.z.toFixed(2),
+                    volume : my_pen.volume
+                };
+                //drop 이벤트가 발생했다면 이전 모델을 제거
+                if(drop_flag == 1){
+                    this.remove_model(rm_id_array[index]++);
+                    drop_flag = 0;
+                }
+
+                
+               
+                
+            }
+        </script>
+    </body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Viewstl Javascript Plugin - Simple Example</title>
+    </head>
+
+    <body>  
+        <div style = "border : groove; padding:20px; border-radius : 20px">
+            <h1>HY3D FACTORY RPA</h1>
+            <button onclick = "makebox()">add model</button>
+
+            <form action="/process" method="post">
+                
+
+
+
+            <div id = "main" style="border : solid">
+                <div style="border : solid; border-color : skyblue; padding :10px">
+                    <p> 
+                        - 사용방법<br>
+                        1. 3d 파일들을 아래 영역에 drag-and-drop<br>
+                        2. 세부값들 입력후 하단 제출버튼 클릭
+                    </p>
+                </div>
+            </div>
+            <div id = "detail"> 
+                <p>입력값1 : <input type="text" name="input1"" value = 0></p>
+                <!-- <p>입력값1 : <input type="text" name="input2" value = 0></p> -->
+                <!-- <p>입력값1 : <input type="text" name="input3" value = 0></p> -->
+            </div> 
+
+            <p>
+                <input type="submit" onclick = "clickSubmit()">
+            </p>
+            
+            
+            </form>
+        </div>
+            
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script>
+            var count = 0;
+
+           
+            var Obj = function(filename,x,y,z,v){
+                this.filename = filename;
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.v = v;
+                return this;
+            }
+            
+            // var ObjectList = [];
+            // var o1 = new Obj("dragon",1,2,3,4);
+            // var o2 = new Obj("pen",10,20,30,40);
+            // var o3 = new Obj("coffee",100,200,300,400);
+            // ObjectList.push(o1);
+            // ObjectList.push(o2);
+            // ObjectList.push(o3);
+
+            function submitform(){
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                var j = {
+                    "first_name":"binchen",
+                    "last_name":"heris",
+                };
+                xhr.send(JSON.stringify(j));
+            }
+
+            function clickSubmit(){
+                alert("submit!");
+            }
+
+            makebox();
+
+            function makebox(){
+                var id = 'div';
+                id = id + `${count}`;
+                var div_parent =`
+                <div id = '${id}' style=
+                "width : 220px;
+                height : 300px;
+                margin : 10px;
+                color : black;
+                textAlign : left;
+                border : inset;
+                display : inline-block;
+                ">
+                </div>
+                `;
+                // div_parent.style.float = "left";
+
+                // var div_child =`
+                // <div style=
+                // "width : 200px;
+                // height : 200px;
+                // margin-left : 10px;
+                // margin-top : 10px;
+                // border : inset;
+                // background-color : grey;"
+                // >
+                // </div>
+                // `;
+                var div_child= document.createElement("div");
+                // id = id + `${count}`;
+                // div_child.id = id;
+                div_child.style.width = "200px";
+                div_child.style.height = "200px";
+                div_child.margin = 0;
+                // div_child.style.background = "grey";
+                div_child.style.border = "dotted";
+                div_child.style.backgroundImage = "url('add_file.png')";
+                div_child.style.backgroundSize = "50% 50%";
+                div_child.style.backgroundRepeat = "no-repeat";
+                div_child.style.backgroundPosition = "center";
+                div_child.style.color = "green";
+                div_child.style.marginLeft = "6px";
+                div_child.style.marginTop = "6px";
+
+                // var div_parent = document.createElement("div");
+                // var id = 'div';
+                // id = id + `${count}`;
+                // div_parent.id = id;
+                // div_parent.style.width = "220px";
+                // div_parent.style.height = "300px";
+                // // div_parent.marginLeft = "10px";
+                // // div_parent.marginRight = "10px";
+                // div_parent.margin = "10px";
+                // // div_parent.style.background = "yellow";
+                // div_parent.style.color = "black";
+                // div_parent.style.textAlign = "left";
+                // div_parent.style.border = "inset";
+                // div_parent.style.float = "left";
+                // // div_parent.style.marginLeft = "10px";
+    
+    
+    
+    
+                // // alert("now id = " + id);
+                var detail = document.createElement("p");
+                detail.style.marginLeft = "10px";
+                detail.innerHTML = `
+                <p>부피 : <input type="hidden" name="number" value = 0></p>
+                `;
+                var detail2 = document.createElement("p");
+                var name = 'input'
+                name = name + count;
+                detail2.innerHTML = `
+                    <p>수량 : <input type="text" name=${name} value = 0></p>
+                `;
+                detail2.style.marginLeft = "10px";
+    
+    
+                // document.getElementById("main").appendChild(div_parent);
+                // document.getElementById(id).appendChild(div_child);
+                // $('#main').append(div_parent);
+                $("#main").append(div_parent);
+                // $(id).append(div_parent);
+                // $("#main").append(div_child);
+                document.getElementById(id).appendChild(div_child);
+                document.getElementById(id).appendChild(detail);
+                document.getElementById(id).appendChild(detail2);
+                // $('#id').append(div_child);
+                // $('#id').append(detail);
+                // $('#id').append(detail2);
+                // document.getElementById("main").appendChild(div_parent);
+                // document.getElementById(id).appendChild(div_child);
+                // document.getElementById(id).appendChild(detail);
+                // document.getElementById(id).appendChild(detail2);
+                count = count + 1;
+            }
+            </script>
+        
+    </body>
+
+
+</html>

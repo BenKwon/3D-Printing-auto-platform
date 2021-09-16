@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+           #price_info{
+            border:solid;
+            width: fit-content;
+            margin: 10px 0 0px 10px;
+            background-color:blanchedalmond;
+           }
+           .printer{
+               border-right: solid;
+               padding-right: 5px;
+           }
+           #drop_zone {
+                width:  100%;
+                height: 150px;
+                display:inline-block;
+            } 
+            .more_info{
+                margin-left: 10px;
+            }
+            #other_info{
+                margin-top: 30px;
+                border-top: 1px solid grey;
+            }
+            #table_distribute{
+                width: 300px;
+
+            }
+            #table_modeling{
+                width: 500px;
+            }
+            .tables {
+                border-collapse: collapse;
+                margin-left: 10px;
+                display: none;
+                margin-top: 10px;
+                width: 500px;
+
+            }
+            #extra_info_show{
+                background-color: gray; /* Green */
+                border: none;
+                color: white;
+                padding: 5px 15px;
+                font-size: 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin-left: 10px;
+                cursor: pointer;   
+            }
+            table, td, th {
+                border: 1px solid black;
+            }
+            td>input{
+                width: 100%;
+                border :0;
+            }
+            img{
+                display: inline-block;
+                margin-bottom: 3px;
+            }
+        </style>
+
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+
+    <body>
+        
+       
+        <img src="logo.png">
+        <form action="/process" method="post">
+            <input id="models_info" type="hidden" name="models_info">
+        <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <div id="cont_box" style="border :">
+                <p>파일을 끌어 당겨서 업로드 해주세요.(.stl)</p>
+                <div id="stl_cont" style="display: none; visibility: hidden;"></div>
+                
+            </div>
+        </div>
+        <div id = "other_info">
+            <div id="price_info">
+                SLA : <span class="printer" id="sla">0 원</span>
+                SLS : <span class="printer" id="sls">0 원</span>
+                SLA(clear) : <span class="printer" id="clear" style="border:none;">0 원</span>
+            </div>
+            <div>
+                <table style="display: inline-block; float: left;">
+                    <tr>
+                      <th>   </th>
+                      <th>SLS　　　　</th>
+                      <th>SLA　　　　</th>
+                      <th>SLS(clear)</th>
+                    </tr>
+                    <tr>
+                      <td>재료비</td>
+                      <td>0원</td>
+                      <td>0원</td>
+                      <td>0원</td>
+                    </tr>
+                    <tr>
+                        <td>장비사용료</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                      </tr>
+                      <tr>
+                        <td>합계</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                      </tr>
+                  </table>
+                  <table style="display: inline-block; float: left; ">
+                    <tr>
+                      <th>   </th>
+                      <th>SLS　　　　</th>
+                      <th>SLA　　　　</th>
+                      <th>SLS(clear)</th>
+                    </tr>
+                    <tr>
+                      <td>재료비</td>
+                      <td>0원</td>
+                      <td>0원</td>
+                      <td>0원</td>
+                    </tr>
+                    <tr>
+                        <td>장비사용료</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                      </tr>
+                      <tr>
+                        <td>합계</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                        <td>0원</td>
+                      </tr>
+                  </table>
+            </div>
+            
+            <h2 style="clear: both;">Excel No</h2> <input  class="more_info" type="text" name="excel_no">
+            <p><h2>제작시간</h2> <input class="more_info"  type="text" name="print_duration"></p>
+            <!-- <p id="display_extra" class=" more_info" onclick="display_extra()">상세 정보표시</p> -->
+            <p><div id="extra_info_show" class="more_info"  onclick="detail_table_show()">상세 정보 표시</div></p>
+
+            <table id="table_distribute" class="more_info tables" >
+                <tr>
+                    <td>분류선택</td>
+                    <td style="text-align:center">
+                      <select name="distribute" id="cars" style="display: inline-block;">
+                        <option value="제작">제작</option>
+                        <option value="설계">설계</option>
+                        <option value="개발">개발</option>
+                        <option value="도색">도색</option>
+                      </select>    
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>소요일자</td>
+                    <td><input size="20" name="distribute_duration" type="text" value="3"></td>
+                  </tr>
+            </table>
+            
+            <table id="table_modeling" class="more_info tables" >
+                <th colspan="4">모델링</th>
+                <colgroup>
+                    <col span="1" style="width: 60%;">
+                    <col span="1" style="width: 14%;">
+                    <col span="1" style="width: 14%;">
+                    <col span="1" style="width: 14%;">
+                 </colgroup>
+                <tr>
+                  <th>내역</th>
+                  <th>담당자</th>
+                  <th>소요일자</th>
+                  <th>단가</th>
+                </tr>
+                <tr>
+                    <td><input  name="modeling_detail" type="text" value = "0" ></input></td>
+                    <td><input name="modeling_manager" type="text" value = "0"></input></td>
+                    <td><input name="modeling_duration" type="text" value = "0"></input></td>
+                    <td><input name="modeling_price" type="text" value = "0"></input></td>
+                  </tr>
+            </table>
+
+            <table id="table_extra2" class="more_info tables" >
+                <th colspan="3">도색</th>
+                <colgroup>
+                    <col span="1" style="width: 60%;">
+                    <col span="1" style="width: 20%;">
+                    <col span="1" style="width: 20%;">
+                 </colgroup>
+                <tr>
+                  <th>내역</th>
+                  <th>수량</th>
+                  <th>단가</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="color_details" value = "0"></input></td>
+                    <td><input type="text" name="color_nums" value = "0"></input></td>
+                    <td><input type="text" name="color_price" value = "0"></input></td>
+                  </tr>
+            </table>
+
+            <table id="table_extra3" class="more_info tables" >
+                <tr>
+                    <td>배송수량</td>
+                    <td><input size="20"  name="delivery_nums" type="text" value="1"></td>
+                  </tr>
+                  <tr>
+                    <td>배송가격</td>
+                    <td><input size="20"   name="delivery_price" type="text" value="4000"></td>
+                  </tr>
+            </table>
+
+            <!-- <p>입력값1 : <input type="text" name="input2" value = 0></p> -->
+            <!-- <p>입력값1 : <input type="text" name="input3" value = 0></p> -->
+        </div> 
+
+        <p>
+            <input  class="w3-btn w3-black more_info" type="submit" onclick = "clickSubmit()">
+        </p>
+
+
+        </form>
+
+        <script src="stl_viewer.min.js"></script>
+        <!--★★★★★★JAVA SCRIPT★★★★★★-->
+        <script>
+            //상세정보 표시 클릭시 테이블 표시
+            function detail_table_show() {
+                let tables = document.getElementsByClassName("tables");
+                var i = 0;
+                while(i<tables.length){
+                    let table = tables[i];
+                    let table_display = window.getComputedStyle(table).getPropertyValue('display');
+                    if(table_display=='none'){
+                        table.style.display = 'table';
+                    }else {
+                        table.style.display = 'none';
+                    }      
+                    i++;
+                    
+                }
+            }
+            </script>
+        <script>
+            
+            var stl_viewer=new StlViewer ( document.getElementById("stl_cont") );
+            //stl_viewer객체 를 담는 배열
+            var object_array = [];
+            //각 stl_viewer객체에서 지워야할 models의 인덱스를 담는 배열
+            var rm_id_array = [];
+            //stl_cont의 수
+            var count = 0;
+            //drops플래그
+            var drop_flag = 0;
+            //각 stl viwer객체에 담긴 3d model의 정보를 담는 배열
+            var info_array = [];
+            var price_sum = [0,0,0]; //[sla, sls ,sla(clear)]
+            var max_height = 0;
+            
+            function numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            //모델별 무게 단순화알고리즘
+            function get_weight(weight){
+                var set_weight = weight * 1.01 * 0.001;
+                var quotient = parseInt(set_weight / 5);
+                set_weight =  quotient * 5 + 5;
+                return set_weight;
+            }
+        
+            function get_price(dims,weight){
+                var dims_rotated = [parseFloat(dims[0]),parseFloat(dims[1]),parseFloat(dims[2])]; //[x',y',z',volume]
+                dims_rotated.sort(function(a,b){
+                    return b-a;
+                });
+               console.log(dims_rotated);
+                var volume = parseFloat(dims[3]);
+                var largest = 0 ;
+                var price  = [0,0,0];
+                
+                var z_prime = (dims_rotated[1] + Math.sqrt(3)*dims_rotated[2])/2;
+                var quotient =  parseInt((z_prime).toFixed(0)/5);
+                z_double_prime = quotient *5 + 5;
+                console.log(z_prime);
+                console.log(z_double_prime);
+                if(z_double_prime>max_height){
+                    max_height = z_double_prime;
+                }
+                var hour = z_double_prime/10 + 3;
+                //프린터별 견적가 계산
+                //sla
+                console.log(weight);
+                price[0] = weight * 700 + hour * 30000;
+                //sls
+                price[1] = weight * 1000 + hour * 50000;
+                price[2] = weight * 700 + hour * 50000;
+              //  console.log(",,,,,,,,,,,,,,");
+               console.log(hour);
+                //return price;
+                return max_height;
+            }
+            function dropHandler(ev) {
+                console.log('File(s) dropped');
+                // Prevent default behavior (Prevent file from being opened)
+                ev.preventDefault();
+                //console.log(ev.dataTransfer.files);
+                if (ev.dataTransfer.items) {
+                    if(ev.dataTransfer.items.length > 6){
+                        alert("파일은 최대 6개씩 올릴수있습니다.");
+                        return 1;
+                    }
+                        // Use DataTransferItemList interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                        // If dropped items aren't files, reject them
+                        //반환된 stl_viewer객체에 업로드된 3D모델을 로드
+                        create_model(i).add_model({local_file:ev.dataTransfer.files[i]});
+                        console.log(ev.dataTransfer.files);
+                        if (ev.dataTransfer.items[i].kind === 'file') {
+                            var file = ev.dataTransfer.items[i].getAsFile();
+                            console.log('... file[' + i + '].name = ' + file.name);
+                        }
+                    }
+                } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                    console.log(ev.dataTransfer.files[i]);
+                    }
+                }
+            }
+
+            function dragOverHandler(ev) {
+                console.log('File(s) in drop zone'); 
+                // Prevent default behavior (Prevent file from being opened)
+                ev.preventDefault();
+            }
+
+            function create_model(){
+                //stl_cont를 감싸는 wragp_cont 
+                var wrap_cont = document.createElement("div");
+                var wrap_id = 'wrap_cont';
+                wrap_id += `${count}`;
+                wrap_cont.id = wrap_id;
+                wrap_cont.style.background = "#f0f0f5";
+                wrap_cont.style.width = "220px";
+                wrap_cont.style.height = "290px";
+                wrap_cont.style.display = "inline-block";
+                wrap_cont.style.margin = "10px";
+                wrap_cont.style.border = "dotted";
+                wrap_cont.style.padding = "10px";
+                wrap_cont.style.fontSize = "10px";
+                wrap_cont.style.textAlign = "center";
+
+                //stl파일이 출력될 canvas를 감쌀 stl_cont
+                var stl_cont = document.createElement("div");
+                var cont_id = 'stl_cont';
+                cont_id += `${count}`;
+                stl_cont.id = cont_id;
+                stl_cont.style.width = "180px";
+                stl_cont.style.height = "180px";
+                stl_cont.margin = 0;
+                stl_cont.style.background = "white";
+                stl_cont.style.marginLeft ="7px";
+                stl_cont.display = "inline-block";
+                var detail = document.createElement("p");
+                detail.innerHTML = "Loading...<br><br>";
+                detail.style.color = "black";
+                var detail2 = document.createElement("p");
+                 
+                detail2.innerHTML = `
+                    수량 <input type="text" width="50%" name=${name} value = 1>
+                `;
+
+                //wrap_cont의 갯수를 기록할 count변수 1증가
+                count++;
+
+                //부모자식 구도 배치
+                document.getElementById("cont_box").appendChild(wrap_cont);
+                document.getElementById(wrap_id).appendChild(stl_cont);
+                document.getElementById(wrap_id).appendChild(detail);
+                document.getElementById(wrap_id).appendChild(detail2);
+                
+                //make_object에서 만들어진 stl_viewer객체를 반환
+                return make_object(cont_id);
+            }
+
+            function make_object(cont_id){
+                var stl_viewer = new StlViewer
+                (
+                    document.getElementById(cont_id),
+                    {
+                        on_model_drop : drop_handler,
+                        model_loaded_callback:stl_loaded,
+                        allow_drag_and_drop : false,
+                        auto_rotate : true,
+
+                    }
+                );
+              //  stl_viewer.rotate(2, 0.5, 0, 0);
+                
+                object_array.push(stl_viewer);
+                if(rm_id_array[count-1] == undefined){
+                    //rm_id_array에 1을 넣어줌 
+                    rm_id_array.push(1);
+                    //info_array에 3d모델의 정보를 넣기위한 객체를 넣어줌
+                    info_array.push({});
+                }
+           /*     else{
+                    rm_id_array[count-1]++;
+                }
+            */
+                return stl_viewer;
+            }
+            
+            //stl viewer 객체 drop이벤트 핸들러
+            function drop_handler(){
+                //드랍 플래그 설정
+                drop_flag = 1;  
+            }
+
+            function stl_loaded()
+            {   
+                //현재 로드되는 모델의 id
+                var model_id = this.models[0].id;
+                //모델의 설정값 세팅
+                this.set_display(model_id, "smooth");
+                this.set_scale(model_id, 0.7);
+                //현재 모델링이 출력되는 상자의 자매 노드 (x,y,z,부피가 표시되는 노드)
+                var detail_elem = document.getElementById(this.parent_element.id).nextSibling;
+                var input_models_info = document.getElementById("models_info");
+                //현재 업로드된 3D모델 정보 로드
+                pen_json = JSON.stringify(this.get_model_info(this.models.length));
+                my_pen = JSON.parse(pen_json);
+                volume = my_pen.volume * 2.9154489769321;
+                console.log(my_pen);
+                //dims : 사용자에게 보여질 3D모델 정보 스트링 
+                dims = `${my_pen.name} 
+                 <br>x: ${my_pen.dims.x.toFixed(2)} y: ${my_pen.dims.y.toFixed(2)}  z: ${my_pen.dims.z.toFixed(2)}
+                 <br> 부피 : ${volume.toFixed(2)}`;                
+                //3D 모델 정보(X,Y,Z 부피 값을 HTML로 보냄)
+                 detail_elem.innerHTML = dims;
+                var dims_array = [my_pen.dims.x.toFixed(2),my_pen.dims.y.toFixed(2),my_pen.dims.z.toFixed(2),volume.toFixed(2)];
+
+                //stl_cont숫자 < 숫자부분을 빼내서 index에 저장
+                var index = this.parent_element.id.substr(8,100);
+                index  = Number(index);
+
+                info_array[index] = {
+                    filename: my_pen.name, 
+                    x: my_pen.dims.x.toFixed(2),
+                    y: my_pen.dims.y.toFixed(2),
+                    z: my_pen.dims.z.toFixed(2),
+                    volume : volume.toFixed(2)
+                };
+                input_models_info.value = JSON.stringify(info_array);
+                console.log(info_array.toString());
+                //drop 이벤트가 발생했다면 이전 모델을 제거
+                if(drop_flag == 1){
+                    this.remove_model(rm_id_array[index]++);
+                    drop_flag = 0;
+                }
+                var weight = get_weight(volume.toFixed(2));
+                var price = get_price(dims_array,weight)
+                for(var i = 0 ; i < 3 ; i ++){
+                    price_sum[i] += price[i];
+                }
+                document.getElementById("sla").innerHTML = numberWithCommas(price_sum[0]) + " 원";
+                document.getElementById("sls").innerHTML =numberWithCommas(price_sum[1]) + " 원";
+                document.getElementById("clear").innerHTML =numberWithCommas(price_sum[2]) + " 원"; price_sum[2] + " 원";
+                    
+
+            }
+        </script>
+    </body>
+</html>

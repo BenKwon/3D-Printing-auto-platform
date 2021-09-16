@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Viewstl Javascript Plugin - Simple Example</title>
+    </head>
+
+    <body>  
+        <div style = "border : groove; padding:20px; border-radius : 20px">
+            <h1>HY3D FACTORY RPA</h1>
+            <button onclick = "makebox()">add model</button>
+
+            <form action="/process" method="post">
+                
+
+
+
+            <div id = "main" style="border : solid">
+                <div style="border : solid; border-color : skyblue; padding :10px">
+                    <p> 
+                        - 사용방법<br>
+                        1. 3d 파일들을 아래 영역에 drag-and-drop<br>
+                        2. 세부값들 입력후 하단 제출버튼 클릭
+                    </p>
+                </div>
+            </div>
+            <div id = "detail"> 
+                <p>입력값1 : <input type="text" name="input1"" value = 0></p>
+                <!-- <p>입력값1 : <input type="text" name="input2" value = 0></p> -->
+                <!-- <p>입력값1 : <input type="text" name="input3" value = 0></p> -->
+            </div> 
+
+            <p>
+                <input type="submit" onclick = "clickSubmit()">
+            </p>
+            
+            
+            </form>
+        </div>
+            
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script>
+            var count = 0;
+
+           
+            var Obj = function(filename,x,y,z,v){
+                this.filename = filename;
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.v = v;
+                return this;
+            }
+            
+            // var ObjectList = [];
+            // var o1 = new Obj("dragon",1,2,3,4);
+            // var o2 = new Obj("pen",10,20,30,40);
+            // var o3 = new Obj("coffee",100,200,300,400);
+            // ObjectList.push(o1);
+            // ObjectList.push(o2);
+            // ObjectList.push(o3);
+
+            function submitform(){
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                var j = {
+                    "first_name":"binchen",
+                    "last_name":"heris",
+                };
+                xhr.send(JSON.stringify(j));
+            }
+
+            function clickSubmit(){
+                alert("submit!");
+            }
+
+            makebox();
+
+            function makebox(){
+                var id = 'div';
+                id = id + `${count}`;
+                var div_parent =`
+                <div id = '${id}' style=
+                "width : 220px;
+                height : 300px;
+                margin : 10px;
+                color : black;
+                textAlign : left;
+                border : inset;
+                display : inline-block;
+                ">
+                </div>
+                `;
+                // div_parent.style.float = "left";
+
+                // var div_child =`
+                // <div style=
+                // "width : 200px;
+                // height : 200px;
+                // margin-left : 10px;
+                // margin-top : 10px;
+                // border : inset;
+                // background-color : grey;"
+                // >
+                // </div>
+                // `;
+                var div_child= document.createElement("div");
+                // id = id + `${count}`;
+                // div_child.id = id;
+                div_child.style.width = "200px";
+                div_child.style.height = "200px";
+                div_child.margin = 0;
+                // div_child.style.background = "grey";
+                div_child.style.border = "dotted";
+                div_child.style.backgroundImage = "url('add_file.png')";
+                div_child.style.backgroundSize = "50% 50%";
+                div_child.style.backgroundRepeat = "no-repeat";
+                div_child.style.backgroundPosition = "center";
+                div_child.style.color = "green";
+                div_child.style.marginLeft = "6px";
+                div_child.style.marginTop = "6px";
+
+                // var div_parent = document.createElement("div");
+                // var id = 'div';
+                // id = id + `${count}`;
+                // div_parent.id = id;
+                // div_parent.style.width = "220px";
+                // div_parent.style.height = "300px";
+                // // div_parent.marginLeft = "10px";
+                // // div_parent.marginRight = "10px";
+                // div_parent.margin = "10px";
+                // // div_parent.style.background = "yellow";
+                // div_parent.style.color = "black";
+                // div_parent.style.textAlign = "left";
+                // div_parent.style.border = "inset";
+                // div_parent.style.float = "left";
+                // // div_parent.style.marginLeft = "10px";
+    
+    
+    
+    
+                // // alert("now id = " + id);
+                var detail = document.createElement("p");
+                detail.style.marginLeft = "10px";
+                detail.innerHTML = `
+                <p>부피 : <input type="hidden" name="number" value = 0></p>
+                `;
+                var detail2 = document.createElement("p");
+                var name = 'input'
+                name = name + count;
+                detail2.innerHTML = `
+                    <p>수량 : <input type="text" name=${name} value = 0></p>
+                `;
+                detail2.style.marginLeft = "10px";
+    
+    
+                // document.getElementById("main").appendChild(div_parent);
+                // document.getElementById(id).appendChild(div_child);
+                // $('#main').append(div_parent);
+                $("#main").append(div_parent);
+                // $(id).append(div_parent);
+                // $("#main").append(div_child);
+                document.getElementById(id).appendChild(div_child);
+                document.getElementById(id).appendChild(detail);
+                document.getElementById(id).appendChild(detail2);
+                // $('#id').append(div_child);
+                // $('#id').append(detail);
+                // $('#id').append(detail2);
+                // document.getElementById("main").appendChild(div_parent);
+                // document.getElementById(id).appendChild(div_child);
+                // document.getElementById(id).appendChild(detail);
+                // document.getElementById(id).appendChild(detail2);
+                count = count + 1;
+            }
+            </script>
+        
+    </body>
+
+
+</html>
+
+

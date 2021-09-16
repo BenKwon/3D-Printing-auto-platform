@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Viewstl Javascript Plugin - Simple Example</title>
+    </head>
+
+    <body>
+        <p>asdf</p>
+        <div id="stl_cont" style="width:500px;height:500px;margin:0 auto;"></div>
+
+        <script src="stl_viewer.min.js"></script>        
+        <script>
+            var stl_viewer=new StlViewer
+            (
+                document.getElementById("stl_cont"),
+                {
+                    models:
+                    [
+                        {filename:"pen.stl"}
+                    ]
+                }
+            );
+        </script>
+        
+    </body>
+</html>
+
+
+<!-- <html>
+    <head>
+    <title>Viewstl Javascript Plugin - Simple Example</title>
+    </head>
+
+    <body>
+        <h1 id = "header"></h1>
+        <div id="stl_cont" style="width:200px;height:200px;margin:0 auto;background-color:#D0D0D0;"></div>
+        <p id = "ppp"></p>
+        
+        <script src="stl_viewer.min.js"></script>		
+        <script>
+            
+            var count = 0;
+            var pen_json;
+            var my_pen;
+            function stl_loaded()
+            {
+                // alert();
+                pen_json = JSON.stringify(stl_viewer.get_model_info(0));
+                my_pen = JSON.parse(pen_json);
+                console.log(my_pen.dims.x);
+                console.log(my_pen.dims.y);
+                console.log(my_pen.dims.z);
+                document.getElementById("header").innerHTML = my_pen.dims.x;
+                var model_binary_data = stl_viewer.get_stl_bin(0);
+                console.log(model_binary_data);
+                ;
+
+            }
+
+            function drops(filename){
+                stl_viewer.remove_model(0);
+                count = count + 1;
+                create_model();
+            }
+            function clicked(){
+                console.log("hello");
+                console.log(Document.getElementByld);
+
+                // console.log(this);
+                
+                // pen_json = JSON.stringify(this.get_model_info(0));
+                // my_pen = JSON.parse(pen_json);
+                // console.log(my_pen.dims.x);
+                // console.log(my_pen.dims.y);
+                // console.log(my_pen.dims.z);
+
+            }
+            
+            var stl_viewer=new StlViewer
+            (
+                document.getElementById("stl_cont"),
+                {
+                    on_model_drop : drops,
+                    on_model_mouseclick : clicked,
+                    model_loaded_callback:stl_loaded,
+                    models: 
+                    [
+                        {id:0, filename:"dragon.stl"},
+                    ]
+                }
+            );
+            
+            function create_model(){
+                // alert(count + 'model create');
+                var div = document.createElement("div");
+                var id = 'stl_cont';
+                id = id + `${count}`;
+                div.id = id;
+                div.style.width = "200px";
+                div.style.height = "200px";
+                div.margin = 0;
+                div.style.background = "purple";
+                div.style.color = "yellow";
+                // alert("now id = " + id);
+                var detail = document.createElement("p");
+                detail.innerHTML = "부피 : ";
+                var detail2 = document.createElement("p");
+                detail2.innerHTML = "수량 : ";
+
+                document.getElementById("ppp").appendChild(div);
+                document.getElementById("ppp").appendChild(detail);
+                document.getElementById("ppp").appendChild(detail2);
+
+                var sub = "stl_cont";
+                sub = sub + count;
+
+                var stl_viewer=new StlViewer
+                (
+                    document.getElementById(sub),
+                    {
+                        on_model_drop : drops,
+                        on_model_mouseclick : clicked,
+                        model_loaded_callback:stl_loaded,
+                        models: 
+                        [
+                            {id:0, filename:"dragon.stl"},
+                        ]
+                    }
+                );
+       
+                
+            }
+
+            stl_viewer.set_drag_and_drop(true);
+            
+        //   stl_viewer.add_model({id:1, filename: "pen.stl"});
+        
+        </script>
+    </body>
+</html>
+
+ -->
+
+
+ <html>
+    <head>
+    <title>Viewstl Javascript Plugin - Simple Example</title>
+    </head>
+
+    <body>
+        <h1 id = "header"></h1>
+        <!-- <div 
+        id="stl1" 
+        style = 
+        "width:200px;
+        height:200px;
+        margin:0;
+        background-color : red;"></div>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+        <script>
+            // var test1 = document.getElementById("stl1");
+            $("#stl1").click(function(){
+                alert("clicked test1");
+            })
+
+        </script>
+        <div 
+        id="stl2" 
+        style = 
+        "width:200px;
+        height:200px;
+        margin:0;
+        background-color: blue;"></div>
+        <div 
+        id="stl3" 
+        style = 
+        "width:200px;
+        height:200px;
+        margin:0;
+        background-color: green;"></div> -->
+
+        <p id = "ppp">3D Model List</p>
+    
+        <script src="stl_viewer.min.js"></script>      
+        <script> 
+            var count = 0; // 현재 추가된 모델 개수
+            var check = 1; // 추가 확인용 변수
+            var pen_json;
+            var my_pen;
+            var object_array = [];
+            var rm_id = [1,1,1,1,1];
+            create_model();
+            object_array.push(make_object(0));
+            object_array[0].set_drag_and_drop(true);
+
+            function create_model(viewe1r,pen){
+                // alert(count + 'model create');
+                var div = document.createElement("div");
+                var id = 'stl_cont';
+                id = id + `${count}`;
+                div.id = id;
+                div.style.width = "200px";
+                div.style.height = "300px";
+                div.margin = 0;
+                div.style.background = "green";
+                div.style.color = "yellow";
+                // alert("now id = " + id);
+                var detail = document.createElement("p");
+                detail.innerHTML = "inputyourfile";
+                detail.style.color = "black";
+                
+                document.getElementById("ppp").appendChild(div);
+                document.getElementById(id).appendChild(detail);
+            }
+            
+
+            function stl_loaded()
+            {
+                //pen_json = JSON.stringify(this.get_model_info(1));
+                // alert(pen_json);
+                //my_pen = JSON.parse(pen_json);
+                var childs = this.parent_element.childNodes;
+                pen_json = JSON.stringify(this.get_model_info(this.models.length));
+                my_pen = JSON.parse(pen_json);
+                dims = ` x: ${my_pen.dims.x.toFixed(2)} y: ${my_pen.dims.y.toFixed(2)}  z: ${my_pen.dims.z.toFixed(2)}
+                <br> volume : ${my_pen.volume.toFixed(2)}`;
+                childs[0].innerHTML = dims;
+                if(this.models.lengt>1){
+                    console.log("length : " + this.models.length);
+                    console.log(this.models);
+                    this.remove_model(rm_id++);
+
+                }
+                //this.remove_model(this.models[0].id);
+                // document.getElementById("header").innerHTML = my_pen.dims.x;
+           //     var model_binary_data = object_array[i].get_stl_bin(0);
+            //    console.log(this.models);
+                ;
+
+            }
+            
+            function drops(filename){
+                pen_json = JSON.stringify(this.get_model_info(1));
+                my_pen = JSON.parse(pen_json);
+                
+                
+                count = count + 1;
+                console.log("drops count : " + count);
+                //this.remove_model(this.models[0].id);
+                create_model(this.models);
+                object_array.push(make_object(count));
+                
+                
+             //   
+                for(var i = 0; i<count; i++){
+                    // pen_json = JSON.stringify(object_array[i].get_model_info(0));
+                    // alert(pen_json);
+                    // alert(object_array[i]);
+                }
+               
+            }
+
+            function clicked(){
+                alert(this);
+                console.log("hello");
+            }
+            
+
+
+            function make_object(i){
+
+                var subid = 'stl_cont';
+                subid = subid + i;
+                // alert("object id = " + id);
+                var stl_viewer = new StlViewer
+                (
+                    document.getElementById(subid),
+                    {
+                        on_model_drop : drops,
+                        model_loaded_callback:stl_loaded,
+                        // models:[{id:subid}]
+                        // [
+                        //         {id:0, filename:"dragon.stl"},
+                        //         // {id:0, filename:null},
+                        // ]
+                    },
+                );
+                return stl_viewer;
+            }
+           
+            
+        //   stl_viewer.add_model({id:1, filename: "pen.stl"});
+        </script>
+    </body>
+</html>

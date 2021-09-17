@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+    maximum-scale=2.0">
+    <link rel="stylesheet" href="new_app3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div>
+          <span id="nav" style="font-size:30px;cursor:pointer;float:left"  onclick="openNav()">&#9776;</span>
+          <!-- <h1><a href="02.html">SSAK<span style="color: #29a15f;">3</span>D</a></h1> -->
+          <span class="title">미처리 견적</span>
+          <img src="notification.png" style="">
+        </div>
+    </header> 
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/create">미처리 견적</a>
+    <a href="#">처리 견적</a>
+    <hr>
+    <a href="#">고객</a>
+  </div>
+  <div class="not_yet_list" id="not_yet_01" style="cursor: pointer;" OnClick="location.href='/paper/${id}';">
+        <div class="yet_item">
+            <h3>권승주</h3>
+            <span style="color:#FF9100;">40분전</span>
+        </div>
+        <div class="yet_customer">
+            <p>이메일 : k01880@naver.com</p>
+            <p>장비 : SLS</p>
+        </div>
+  </div>
+        
+  <div class="wrapper">
+    <div style="height: 80px;"></div>
+    <div class="wrap_cont">
+      <div class="stl_cont">
+
+      </div>
+      <div class="model_info">
+        <p>파일명.stl</p>
+        <p>x:<span>30</span> y:<span>30</span> z:<span>30</span> 부피:<span>3000</span></p>
+        견적가 : <input type="text" name="model0">원
+      </div>
+    </div>
+    <div class="wrap_cont">
+      <div class="stl_cont">
+      </div>
+      <div class="model_info">
+        <p>파일명.stl</p>
+        <p>x:<span>30</span> y:<span>30</span> z:<span>30</span> 부피:<span>3000</span></p>
+        견적가 : <input type="text" name="model0">원
+      </div>
+    </div>
+    
+  </div>
+  <div class="request_btn">견적서 전송</div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        function home(){}
+    </script>
+           
+</body>
+</html>

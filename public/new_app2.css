@@ -1,0 +1,123 @@
+html{
+  font-family: 'Nanum Gothic', sans-serif;
+   
+}
+a{
+  text-decoration: none;
+}
+body {
+    margin: 0;
+    background-color: #FF9100;
+    font-family: 'Nanum Gothic', sans-serif;
+  }
+  #nav{
+      font-size: 5em;
+      color:white;
+      margin-left: 20px;
+      margin-top: 10px;
+  }
+  header{
+      height: fit-content;
+      font-size: 1em;
+      color: #FF9100;
+      display: block;
+      height: fit-content;
+      border-bottom: solid #FF9100;
+  }
+  header div{
+    text-align: center;
+  }
+  header img{
+    margin-top: 20px;
+    margin-right: 10px;
+    float: right;
+  }
+  /* header h1{
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  } */
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+.title{
+  display: inline-block;
+  color: white;
+  padding-left: 30px;  
+  padding-top: 20px;
+  font-size: 1.5rem;
+}
+.wrapper{
+  background-color: white;
+  margin-top: 50px;
+  border-radius: 20px;
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+ /* 견적 리스트 관련  */
+ div.not_yet_list{
+  background-color: #ffffff;
+  border-radius: 15px;
+  width: 95%;
+  margin: auto;
+  margin-top: 20px;
+  box-shadow: 39px 10px 10px 10px #A8A8A829;
+  border: solid  rgb(112, 112, 112,0.1);
+
+}
+div.not_yet_list h3{
+  display: inline;
+}
+div.not_yet_list h{
+display: inline;
+}
+.yet_item{
+padding: 10px 15px 10px 15px;
+}
+.yet_item span{
+  float: right;
+}
+.yet_customer{
+  border-top: rgb(112, 112, 112,0.5) solid 1px ;
+  padding: 3px 15px 15px 15px;
+  line-height: 3px;
+}
+
+/*--------------------------------*/
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }

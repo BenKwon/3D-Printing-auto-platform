@@ -1,0 +1,164 @@
+html{
+   
+}
+a{
+  text-decoration: none;
+}
+body {
+    font-family: "Lato", sans-serif;
+    background-color: #2c3e50;
+
+  }
+  #nav{
+      font-size: 5em;
+      color:white;
+      margin-left: 10px;
+      margin-top: 5px;
+  }
+  header{
+      font-size: 1em;
+      color: white;
+      display: block;
+      height: fit-content;
+      background-color: #2c3e50;
+      border-bottom: solid;
+  }
+  header h1{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  div.box{
+      width: 80%;
+      height: 150px;
+      line-height:150px;
+      margin: 15% auto auto auto;
+      border-radius: 25px;
+  }
+  div.box h2{
+      font-size: 1.5em;
+      text-align: center;
+  }
+  .not_yet{
+    background-color: #29a15f;
+    color: snow;
+
+  }
+  .completed{
+    background-color: #A1DDA1;
+    color: snow;
+
+  }  
+  /* 견적 리스트 관련  */
+  div.not_yet_list{
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 95%;
+    margin: auto;
+    margin-top: 20px;
+}
+div.not_yet_list h3{
+    display: inline;
+}
+div.not_yet_list h{
+  display: inline;
+}
+.yet_item{
+  padding: 3px 15px;
+}
+.yet_item span{
+    float: right;
+}
+.yet_customer{
+    border-top: slategrey solid 1px;
+    padding: 3px 15px 15px 15px;
+    line-height: 3px;
+}
+/*-------------------------------*/
+/*견적 정보 창 관련 */
+
+.wrapper{
+  margin: 20px;
+}
+.request_info{
+  grid-column-start:1;
+  grid-column-end: 4;
+  border-radius: 15px;
+  background-color: #ffffff;
+  overflow: auto;
+  line-height: 3em;
+  padding-left: 10px;
+}
+.customer_info div{
+  display: inline-block;
+  width: 110px;
+  color: #6F6F6F;
+}
+.customer_info span{
+  border: steelblue solid;
+  border-radius: 5px;
+  padding: 2px;
+}
+.request_btn{
+  display: inline-block;
+  width: 47%;
+  border-radius: 15px;
+  height: 80px;
+  margin-top: 15px;
+  background-color: #29a15f;
+  color: SNOW;
+  text-align: center;
+  font-size: 1.5em;
+  vertical-align: middle;
+  line-height:80px;
+}
+.send{
+ float: left;
+ margin-right: 2px;
+}
+.edit{
+  float: right;
+  margin-left: 2px;
+}
+.request_btn{
+ 
+}
+/*--------------------------------*/
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }

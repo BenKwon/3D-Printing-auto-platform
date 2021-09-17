@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+    maximum-scale=2.0">
+    <link rel="stylesheet" href="new_app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">    <title>Document</title>
+</head>
+<body>
+        
+    <header>
+        <div>
+          <span id="nav" style="font-size:30px;cursor:pointer;float:left"  onclick="openNav()">&#9776;</span>
+          <!-- <h1><a href="02.html">SSAK<span style="color: #29a15f;">3</span>D</a></h1> -->
+          <img src="app_user.png" style="">
+        </div>
+        
+    </header> 
+  
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/unprocessed_estimate">미처리 견적</a>
+    <a href="#">처리 견적</a>
+    <hr>
+    <a href="#">고객</a>
+  </div>
+ 
+  <div class="box" id="logo" style="cursor: pointer;" onclick="window.location.href='/create';">
+    <img src="app_logo.png">
+    <p>언제 어디서나 업무를 간단하게 처리하세요</p>
+  </div>
+  <div class="box option">
+    <div class="box_child not_yet" style="cursor: pointer;" onclick="window.location.href='/unprocessed_estimate';">
+      <img class="main-icon" src="미처리견적.png">
+      <h2>미처리 견적 목록</h2>
+    </div>
+    <div class="box_child completed">
+      <img class="main-icon"  src="처리된견적.png">
+      <h2>처리 견적 목록</h2>
+    </div>
+    <div class="box_child completed">
+      <img  src="고객정보.png">
+      <h2>처리 견적 목록</h2>
+    </div>
+    <div class="box_child completed">
+      <img  class="main-icon2" src="환경설정.png">
+      <h2>처리 견적 목록</h2>
+    </div>
+  </div>
+ 
+ 
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        function home(){}
+    </script>
+           
+</body>
+</html>

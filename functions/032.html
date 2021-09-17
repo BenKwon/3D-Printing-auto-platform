@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+    maximum-scale=2.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+    <link rel="stylesheet" href="style2.css">
+    <title>Document</title>
+</head>
+<body>
+        
+    <header>
+        <span id="nav" style="font-size:30px;cursor:pointer;float:left"  onclick="openNav()">&#9776;</span>
+        <h1><a href="02.html">SSAK<span style="color: #29a15f;">3</span>D</a></h1>
+    </header>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/create">미처리 견적</a>
+    <a href="#">처리 견적</a>
+    <hr>
+    <a href="#">고객</a>
+  </div>
+  
+  <div class="box not_yet" style="cursor: pointer;" onclick="window.location.href='/create';">
+    <h2>미처리 견적 목록</h2>
+  </div>
+  <div class="box completed">
+    <h2>처리 견적 목록</h2>
+  </div>
+ 
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        function home(){}
+    </script>
+           
+</body>
+</html>

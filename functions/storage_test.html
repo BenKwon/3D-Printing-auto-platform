@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=0.1">
+    <title>ssak 3d</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+    <style type="text/css">
+        body{
+            background-image: url(background.jpg);
+        }
+        .jumbotron{
+            background-color: rgba(0, 0, 1, 0.4);
+            text-shadow: black 0.2em 0.2em 0.2em;
+            margin-top: 100px;
+           
+            color: whitesmoke;            
+        }
+        .info_private{
+            padding: 30px 10px 0px 10px;
+        }
+        .price_submit{
+            padding: 0px 10px 10px;
+        }
+        .info_private > div{
+            padding: 10px;
+        }
+        .card{
+            margin-top: 50px;
+            margin-bottom: 50px;
+            height: fit-content;
+        }
+        .drag_file{
+            border: 1mm dotted rgba(78, 154, 216, 0.658);
+            color: slategray;
+        }
+        .price{
+            height: 100px;
+        }
+        #submit{
+            font-size: 1em;
+            width: 150px;
+            height: 130px;
+        }
+        #price_part{
+            color: slategray;
+        }
+        #drop_zone:hover{
+            background-color: rgba(78, 154, 216, 0.3);
+        }
+        @media screen and (max-width: 990px){
+            .card{
+                height: 780px;
+            }
+            #price_part{
+                margin-top: 20px;
+            }
+            #submit{
+            margin-top: 20px;
+            font-size: 1em;
+            width: 150px;
+            height: 50px;
+            }
+        }
+        .file_price{
+            color: rgb(0, 153, 255);
+        }
+        .wrap_cont{
+            margin-top: 10px;
+        }
+        .stl_cont{
+            width: 220px;
+            height: 150px;
+            margin: auto;
+            margin-top: 20px;
+        }
+    </style>
+    <button onclick="import_files()">import 3D files</button>
+    <img name="igg" src="test2.jpg" onclick="import_files()">
+    <div class="container card">
+        <div class="row info_private"> 
+            <div class="col-sm-12">
+                <h2 class="display-5">고객 정보 입력</h2>
+                <form action="/customer_process" method="POST">
+                    <input id="models_info" type="hidden" name="models_info">
+                    <input id="models_price" type="hidden" name="models_price">
+                    <input id="models_weight" type="hidden" name="models_weight">
+                    <input id="total_time" type="hidden" name="total_time">
+                    <input id="model_ea" type="hidden" name="model_ea">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력해주세요." name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">회사명</label>
+                        <input type="text" class="form-control" name="company"  placeholder="회사명을 입력해주세요." name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">전화번호</label>
+                        <input type="text" class="form-control" name="phone"  placeholder="전화번호를 입력해주세요." name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" name="email"  placeholder="이메일을 입력해주세요." name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="item">아이템 명</label>
+                        <input type="text" class="form-control" name="item" placeholder="아이템명을 입력해주세요." name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="detail">요청 사항</label>
+                        <textarea class="form-control"  name="detail"  placeholder="기타 요청사항을 입력해주세요."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="equip">장비</label>
+                        <select name="printer" id="printer" class="form-control form-control-sm" onchange="changePrinter()">
+                            <option>SLA</option>
+                            <option>SLS</option>
+                            <option>SLA(clear)</option>
+                        </select>
+                    </div>
+                    
+                
+            </div>
+          </div>
+          <br>
+          
+          <div class="row price_submit" style="height: 150px;">
+            <div class="col-sm-8 drag_file"  id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <p class="text-center align-middle" style="padding-top: 40px;">
+                <svg style="color: rgb(0, 153, 255);" xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16"><path fill="currentColor" fill-rule="nonzero" d="M19.35 6.04C21.95 6.22 24 8.36 24 11c0 2.76-2.24 5-5 5H6c-3.31 0-6-2.69-6-6 0-3.09 2.34-5.64 5.35-5.96A7.496 7.496 0 0 1 12 0a7.49 7.49 0 0 1 7.35 6.04zm-6.517 7.966V7.391l2.992 3.169L17 9.312 12 4 7 9.312l1.175 1.248 2.992-3.17v6.616h1.666z"></path></svg>
+                <br>파일을 드래그&드롭 해주세요.(.stl)</p>
+            </div>
+            <div class="col-sm-4 price">
+                <div id="price_part">
+                    <span style="float: left; padding-top:px; font-size: 1.3em;">
+                        예상 견적가<br><span id="total_price">0 원</span></span>
+                    <button type="submit" class="btn btn-primary" id="submit" style="float: right;">견적 요청</button>
+                </div>
+                
+                
+            </div>
+          </div>
+    </div>
+    <div id="stl_cont" style="display: none; visibility: hidden;"></div>
+
+    <div class="container">
+        <div class="row" id="cont_box">
+            
+        </div>
+        
+    </div>
+    </form>
+    
+    <script src="stl_viewer.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
+
+    <script>
+        
+        var firebaseConfig = {
+            apiKey: "AIzaSyCNSpfT3ouTPvEIj3nBXLOMavYW6LcjT8s",
+            authDomain: "app-maker-ton.firebaseapp.com",
+            databaseURL: "https://app-maker-ton.firebaseio.com",
+            projectId: "app-maker-ton",
+            storageBucket: "app-maker-ton.appspot.com",
+            messagingSenderId: "785518118903",
+            appId: "1:785518118903:web:6476aee171e8704e1e10f2",
+            measurementId: "G-8B6824DD8T"
+        };
+        firebase.initializeApp(firebaseConfig);
+            var jbRandom = Math.random();
+            var secret_id = Math.floor( jbRandom * 10000000000000 );
+            alert(secret_id);
+            secret_id = secret_id.toString();
+    
+            var stl_viewer=new StlViewer ( document.getElementById("stl_cont") );
+            //stl_viewer객체 를 담는 배열
+            var object_array = [];
+            //각 stl_viewer객체에서 지워야할 models의 인덱스를 담는 배열
+            var rm_id_array = [];
+            //stl_cont의 수
+            var count = 0;
+            //drops플래그
+            var drop_flag = 0;
+            //각 stl viwer객체에 담긴 3d model의 정보를 담는 배열
+            var info_array = [];
+            var price_store = [];
+            var price_send  = [];
+            var price_sum = [0,0,0]; //[sla, sls ,sla(clear)]
+            var total_time = 0;
+            var models_weight = [];
+            var models_ea= [];
+            function numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            function changeNums(name){
+                console.log(name);
+                var inputs = document.getElementsByClassName("model_nums");
+                var target_i = Number(name.split('l')[1]);             
+                price_sum = [0,0,0];
+                for(var i = 0; i < 3 ; i++){
+                    for(var j = 0 ; j < price_store.length; j++){
+                        price_sum[i] += price_store[j][i]*Number(inputs[j].value);
+                    }
+                }
+                changePrinter();
+                //var x = document.getElementById("total_price").value;
+            }
+            function changePrinter(detail_elem){
+                var e= document.getElementById("printer");
+                var printer = e.options[e.selectedIndex].value;
+                var inputs = document.getElementsByClassName("model_nums");
+                var total_price = document.getElementById("total_price");
+                var pr_index = -1;
+                var price_list = document.getElementsByClassName("file_price");
+                switch(printer){
+                    case "SLA":
+                        pr_index = 0;
+                        total_price.innerHTML = `${price_sum[0]} 원`;
+                        break;
+                    case "SLS":
+                        pr_index = 1;
+                        total_price.innerHTML = `${price_sum[1]} 원`;
+                        break;   
+                    case "SLA(clear)":
+                        pr_index = 2;
+                        total_price.innerHTML = `${price_sum[2]} 원`;
+                        break;
+                }
+                // console.log(price_list);
+                
+                for(var i = 0 ; i < price_list.length ; i++){
+                    models_ea[i] =Number(inputs[i].value);
+                    document.getElementById("model_ea").value = JSON.stringify(models_ea);
+
+                    price_list[i].innerHTML = `${numberWithCommas(price_store[i][pr_index]*inputs[i].value)}원`;
+                   // price_send[i] = price_store[i][pr_index];
+                }
+                document.getElementById("models_price").value = JSON.stringify(price_send);
+                
+                // console.log(printer);
+
+            }
+            //모델별 무게 단순화알고리즘
+            function get_weight(weight,index){
+                var set_weight = weight * 1.01 * 0.001;
+                var quotient = parseInt(set_weight / 5);
+                set_weight =  quotient * 5 + 5;
+                models_weight[index] = set_weight;
+                document.getElementById("models_weight").value = JSON.stringify(models_weight);
+                return set_weight;
+            }
+        
+            function get_price(dims,weight){
+                var dims_rotated = [parseFloat(dims[0]),parseFloat(dims[1]),parseFloat(dims[2])]; //[x',y',z',volume]
+                dims_rotated.sort(function(a,b){
+                    return b-a;
+                });
+
+                var volume = parseFloat(dims[3]);
+                var largest = 0 ;
+                var price  = [0,0,0];
+                
+                var z_prime = (dims_rotated[1] + Math.sqrt(3)*dims_rotated[2])/2;
+                var quotient =  parseInt((z_prime).toFixed(0)/5);
+                z_double_prime = quotient *5 + 5;
+                var hour = z_double_prime/10 + 3;
+                total_time += hour;
+                document.getElementById("total_time").value = JSON.stringify(total_time);
+                //프린터별 견적가 계산
+                //sla
+                price[0] = weight * 700 + hour * 30000;
+                //sls
+                price[1] = weight * 1000 + hour * 50000;
+                price[2] = weight * 700 + hour * 50000;
+                //  console.log(",,,,,,,,,,,,,,");
+                return price;
+            }
+            /*drag and drop*/
+            function dropHandler(ev) {
+                // console.log('File(s) dropped');
+                // Prevent default behavior (Prevent file from being opened)
+            
+            ev.preventDefault();
+
+            //console.log(ev.dataTransfer.files);
+            if (ev.dataTransfer.items) {
+                if(ev.dataTransfer.items.length > 6){
+                    alert("파일은 최대 6개씩 올릴수있습니다.");
+                    return 1;
+                }
+                // Use DataTransferItemList interface to access the file(s)
+                firebase.analytics();
+                var files = ev.target.files || ev.dataTransfer.files;
+                uploadImage(files,ev.dataTransfer.items.length);
+                for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                    
+                    // If dropped items aren't files, reject them
+                    //반환된 stl_viewer객체에 업로드된 3D모델을 로드
+                    create_model(i).add_model({local_file:ev.dataTransfer.files[i]});
+                    console.log(ev.dataTransfer.files);
+                    if (ev.dataTransfer.items[i].kind === 'file') {
+                        var file = ev.dataTransfer.items[i].getAsFile();
+                        console.log('... file[' + i + '].name = ' + file.name);
+                    }
+                }
+            } else {
+                // Use DataTransfer interface to access the file(s)
+                for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                console.log(ev.dataTransfer.files[i]);
+                }
+            }
+
+            
+        }
+        /*drag and drop*/
+            function dragOverHandler(ev) {
+                console.log('File(s) in drop zone'); 
+                // Prevent default behavior (Prevent file from being opened)
+                ev.preventDefault();
+            }
+
+            function create_model(){
+                var wrap_cont = document.createElement("div");
+                var wrap_id = 'wrap_cont';
+                wrap_id += `${count}`;
+                wrap_cont.id = wrap_id;
+                wrap_cont.classList.add("card");
+                wrap_cont.classList.add('col-sm-3');
+                wrap_cont.classList.add('wrap_cont');
+                var stl_cont = document.createElement("div");
+                var cont_id = 'stl_cont';
+                cont_id += `${count}`;
+                stl_cont.id = cont_id;
+                stl_cont.style.background = "white";
+                stl_cont.classList.add('stl_cont');
+                var card_body = document.createElement("div");
+                card_body.classList.add('card-body');
+                var card_title = document.createElement("h5");
+                card_title.classList.add("card-titile");
+                var card_text = document.createElement("p");
+                card_text.classList.add("card-text");
+                
+                card_body.appendChild(card_title);
+                card_body.appendChild(card_text);
+
+                document.getElementById("cont_box").appendChild(wrap_cont);
+                document.getElementById(wrap_id).appendChild(stl_cont);
+                document.getElementById(wrap_id).appendChild(card_body);
+                count++;
+                //make_object에서 만들어진 stl_viewer객체를 반환
+                return make_object(cont_id);
+            }
+            function make_object(cont_id){
+                var stl_viewer = new StlViewer
+                (
+                    document.getElementById(cont_id),
+                    {
+                        on_model_drop : drop_handler,
+                        model_loaded_callback:stl_loaded,
+                        allow_drag_and_drop : false,
+                        bgcolor:"#4b5057",
+                        canvas_width:"30%",
+                        canvas_height:"30%",
+                    }
+                );
+              //  stl_viewer.rotate(2, 0.5, 0, 0);
+                
+                object_array.push(stl_viewer);
+                if(rm_id_array[count-1] == undefined){
+                    //rm_id_array에 1을 넣어줌 
+                    rm_id_array.push(1);
+                    //info_array에 3d모델의 정보를 넣기위한 객체를 넣어줌
+                    info_array.push({});
+                }
+           /*     else{
+                    rm_id_array[count-1]++;
+                }
+            */
+                return stl_viewer;
+            }
+            
+            //stl viewer 객체 drop이벤트 핸들러
+            function drop_handler(){
+                //드랍 플래그 설정
+                drop_flag = 1;  
+            }
+
+            function stl_loaded()
+
+            {   
+                //현재 로드되는 모델의 id
+                var model_id = this.models[0].id;
+                this.set_color(model_id,"#ffffff");
+                // this.rotate(model_id,0,60,180);
+                //모델의 설정값 세팅
+              //  this.set_display(model_id, "smooth");
+                this.set_scale(model_id, 0.7);
+                //현재 모델링이 출력되는 상자의 자매 노드 (x,y,z,부피가 표시되는 노드)
+                var detail_elem = document.getElementById(this.parent_element.id).nextSibling;
+                var input_models_info = document.getElementById("models_info");
+                //현재 업로드된 3D모델 정보 로드
+                pen_json = JSON.stringify(this.get_model_info(this.models.length));
+                my_pen = JSON.parse(pen_json);
+                volume = my_pen.volume * 2.9154489769321;
+                console.log(my_pen);
+                //dims : 사용자에게 보여질 3D모델 정보 스트링 
+                dims = `${my_pen.name} 
+                 <br>x: ${my_pen.dims.x.toFixed(2)} y: ${my_pen.dims.y.toFixed(2)}  z: ${my_pen.dims.z.toFixed(2)}
+                 <br> 부피 : ${volume.toFixed(2)}`;                
+                //3D 모델 정보(X,Y,Z 부피 값을 HTML로 보냄)
+               // detail_elem.innerHTML = my_pen.name;
+                var dims_array = [my_pen.dims.x.toFixed(2),my_pen.dims.y.toFixed(2),my_pen.dims.z.toFixed(2),volume.toFixed(2)];
+                
+                //stl_cont숫자 < 숫자부분을 빼내서 index에 저장
+                var index = this.parent_element.id.substr(8,100);
+                index  = Number(index);
+
+                info_array[index] = {
+                    filename: my_pen.name, 
+                    x: my_pen.dims.x.toFixed(2),
+                    y: my_pen.dims.y.toFixed(2),
+                    z: my_pen.dims.z.toFixed(2),
+                    volume : volume.toFixed(2)
+                };
+                
+                input_models_info.value = JSON.stringify(info_array);
+                // console.log(info_array.toString());
+                //drop 이벤트가 발생했다면 이전 모델을 제거
+                if(drop_flag == 1){
+                    this.remove_model(rm_id_array[index]++);
+                    drop_flag = 0;
+                }
+                var weight = get_weight(volume.toFixed(2),index);
+                var price = get_price(dims_array,weight)
+                price_store[index] = price;
+
+                for(var i = 0 ; i < 3 ; i ++){
+                    price_sum[i] += price[i];
+                }
+                // console.log(price);
+                var name = 'model'
+                name = name + index;
+                detail_elem.innerHTML = `예상가 <span class="file_price">0원</span><br>
+                수량<input type="text" class="model_nums" width="50%" id=${name} name=${name} oninput="changeNums(name)" value = 1 >`;
+
+                changePrinter(detail_elem);
+                // detail_elem.innerHTML = `예상가 <span class="file_price">${numberWithCommas(price[0])}원</span>`;
+                // document.getElementById("sla").innerHTML = numberWithCommas(price_sum[0]) + " 원";
+                // document.getElementById("sls").innerHTML =numberWithCommas(price_sum[1]) + " 원";
+                // document.getElementById("clear").innerHTML =numberWithCommas(price_sum[2]) + " 원"; price_sum[2] + " 원";
+                    
+
+            }
+
+            function uploadImage(files,number){
+                alert("upload id : "+secret_id + " | number : " + number);
+                for(var i = 0 ; i < number ; i++){
+                    alert("for start");
+                    const ref = firebase.storage().ref()
+                    const file = files[i]
+                    const name = file.name 
+                    const metadata={
+                        contentType:file.type
+                    }
+                    const task = ref.child(secret_id+"/"+name).put(file,metadata)
+                    task
+                    .then(snapshot => snapshot.ref.getDownloadURL())
+                    .then(url => {
+                        console.log(url)
+                        alert("Image Upload Successful " + i + " | name : " + name)
+                    
+                        // const image = document.querySelector('#image')
+                        // image.src = url
+                    })
+                }
+            }
+
+            function import_files(){
+                alert("start");
+                var imgRef = firebase.storage().ref().child('242618/ball.stl'); 
+                imgRef.getDownloadURL().then(function(url){
+                    // var img = document.getElementById('igg');
+                    // img.src = url;
+                    console.log(url);
+                    document.igg.src = url;
+                })
+            //     var storage = firebase.storage();
+            //     var storageRef = storage.ref();
+            //     var tangRef = storageRef.child('242618/test.jpg');
+            //     alert(tangRef);
+            //     document.igg.src = tangRef;
+                
+            //     // First we sign in the user anonymously
+            //     firebase.auth().signInAnonymously().then(function() {
+            //         // Once the sign in completed, we get the download URL of the image
+            //         tangRef.getDownloadURL().then(function(url)                             {
+            //             // Once we have the download URL, we set it to our img element
+            //             document.querySelector('img').src = url;
+            //             document.igg.src = url;
+            //             alert(url);
+                    
+            //     }).catch(function(error) {
+            //         // If anything goes wrong while getting the download URL, log the error
+            //         console.error(error);
+            //     });
+            // });
+            
+            }
+
+    </script>
+</body>
+</html>

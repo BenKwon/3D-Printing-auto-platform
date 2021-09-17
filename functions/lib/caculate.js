@@ -1,4 +1,0 @@
-exports.weight = function(models){
-
-
-}
